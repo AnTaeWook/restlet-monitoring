@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.AgentMetricMapper">
+
+    <select id="selectLatestDate" resultType="org.example.dto.AgentMetricDateDto" parameterType="long">
+        select a.agent_id, a.privateip, ifnull(m.created_at, '0001-01-01 00:00:00.000000') created_at from
+        (select agent_id, privateip from agent where agent_id in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        ) a
+        left join
+        (select agent_id, max(created_at) created_at from metric group by metric.agent_id) m
+        on a.agent_id = m.agent_id
+        order by a.agent_id;
+    </select>
+
+</mapper>

@@ -1,0 +1,4 @@
+rootProject.name = 'restlet-team-a'
+include 'module-common'
+include 'agent-server'
+include 'api-server'

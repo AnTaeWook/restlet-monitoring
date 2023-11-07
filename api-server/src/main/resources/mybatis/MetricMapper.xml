@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.MetricMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="metricId" parameterType="Metric">
+        insert into metric(agent_id, cpu_rate, created_at, free_memory, inbound_traffic, outbound_traffic, total_memory, used_memory)
+        values(#{agentId}, #{cpuRate}, #{createdAt}, #{freeMemory}, #{inboundTraffic}, #{outboundTraffic}, #{totalMemory}, #{usedMemory})
+    </insert>
+
+    <select id="selectByAgentIdAndPeriod" resultType="Metric" parameterType="org.example.dto.MetricReadRequestDto">
+        select * from metric where agent_id = #{agentId} and created_at between #{createdAtMin} and #{createdAtMax} order by created_at
+    </select>
+
+    <insert id="bulkInsert" parameterType="Metric">
+        insert into metric(agent_id, cpu_rate, created_at, free_memory, inbound_traffic, outbound_traffic, total_memory, used_memory)
+        values
+        <foreach collection="list" index="index" item="metric" separator=",">
+        (
+            #{metric.agentId},
+            #{metric.cpuRate},
+            #{metric.createdAt},
+            #{metric.freeMemory},
+            #{metric.inboundTraffic},
+            #{metric.outboundTraffic},
+            #{metric.totalMemory},
+            #{metric.usedMemory}
+        )
+        </foreach>
+    </insert>
+
+    <delete id="deleteAll">
+        delete from metric
+    </delete>
+
+</mapper>

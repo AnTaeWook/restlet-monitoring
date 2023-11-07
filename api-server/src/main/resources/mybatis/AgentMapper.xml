@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.AgentMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="agentId" parameterType="Agent">
+        insert into agent(is_delete, description, os, privateip, registered_at) values(#{isDelete}, #{description}, #{os}, #{privateIP}, #{registeredAt})
+    </insert>
+
+    <select id="selectAll" resultType="Agent">
+        select * from agent where is_delete = false
+    </select>
+
+    <select id="selectById" resultType="Agent" parameterType="java.lang.Long">
+        select * from agent where agent_id = #{agentId} and is_delete = false
+    </select>
+
+    <update id="updateDescriptionWithId" parameterType="Agent">
+        update agent set description = #{description} where agent_id = #{agentId} and is_delete = false
+    </update>
+    
+    <update id="deleteWithId" parameterType="java.lang.Long">
+        update agent set is_delete = true where agent_id = #{agent_id}
+    </update>
+
+    <delete id="deleteAll">
+        delete from agent
+    </delete>
+
+</mapper>

@@ -1,0 +1,16 @@
+[Unit]
+Description=agent server service
+After=network.target
+
+[Service]
+PrivateTmp=true
+Type=notify
+NotifyAccess=all
+User=root
+Restart=always
+EnvironmentFile=-/etc/sysconfig/agent-properties
+WorkingDirectory=/opt/agent-server
+ExecStart=/bin/bash /opt/agent-server/bin/agent-server
+
+[Install]
+WantedBy=multi-user.target
